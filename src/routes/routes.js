@@ -15,6 +15,7 @@ import Login from 'src/components/Dashboard/Views/Login.vue'
 import PriceAction from 'src/components/Dashboard/Views/price/PriceAction.vue'
 import AddPriceAction from 'src/components/Dashboard/Views/price/AddPriceAction.vue'
 import Users from 'src/components/Dashboard/Views/users/Users.vue'
+import Partner from 'src/components/Dashboard/Views/partner/Partner.vue'
 import AddNews from 'src/components/Dashboard/Views/news/addnews.vue'
 import News from 'src/components/Dashboard/Views/news/news.vue'
 import DetailNews from 'src/components/Dashboard/Views/news/detail.vue'
@@ -143,6 +144,11 @@ const routes = [
         path: 'users',
         name: 'Users',
         component: Users
+      },
+      {
+        path: 'partner',
+        name: 'Partner',
+        component: Partner
       },
       {
         path: 'news/add',

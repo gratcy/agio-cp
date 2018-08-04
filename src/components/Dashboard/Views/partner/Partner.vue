@@ -13,29 +13,25 @@
 import Firebase from 'firebase'
 import Select from './Select.vue'
 import Price from './Price.vue'
-import NPrice from './nprice.vue'
-import NNews from './nnews.vue'
 import Type from './Type.vue'
 export default {
   data () {
     return {
-      columns: ['ID', 'Name', 'Email', 'HP', 'Status', 'Type', 'NPrice', 'NNews', 'expired'],
+      columns: ['ID', 'Name', 'Email', 'HP', 'Status', 'Type', 'Subscriber', 'Rating'],
       tableData: [],
       options: {
         templates: {
           Status: Select,
           Price: Price,
-          Type: Type,
-          NPrice: NPrice,
-          NNews: NNews
+          Type: Type
         },
         headings: {
-          expired: 'Expired Price Action',
+          ID: 'ID',
           LastLogin: 'Last Login',
           created_at: 'Registered At',
           Type: 'Type',
-          NPrice: 'Notif Price Action',
-          NNews: 'Notif Event'
+          Subscriber: 'Subscriber',
+          Rating: 'Rating'
         }
       }
     }
@@ -46,7 +42,7 @@ export default {
   methods: {
     definedata () {
       let _this = this
-      Firebase.database().ref('users').orderByChild('level').equalTo('member').on('value', function (snapshot) {
+      Firebase.database().ref('users').orderByChild('level').equalTo('partner').on('value', function (snapshot) {
         let dt = snapshot.val()
         _this.tableData = []
         for (let key in dt) {
@@ -59,10 +55,6 @@ export default {
             obj.created_at = _this.$moment(obj.created_at).format('DD MMM YYYY HH:mm')
           }
 
-          if (typeof (obj.expired) !== 'undefined' && obj.expired !== 0) {
-            obj.expired = _this.$moment(obj.expired).format('DD MMM YYYY HH:mm')
-          }
-
           if (typeof (obj.price) !== 'undefined') {
             if (typeof (obj.status) !== 'undefined') {
               _this.tableData.push({ ID: key,
@@ -73,15 +65,14 @@ export default {
                 LastLogin: obj.lastlogin,
                 Price: obj.price,
                 key: key,
-                expired: obj.expired,
                 created_at:
                 obj.created_at,
                 type: obj.level,
-                notification_price_action: obj.notification_price_action,
-                notification_news: obj.notification_news })
+                Subscriber: obj.total_subscriber || 0,
+                Rating: obj.rating || 0 })
             } else {
               _this.tableData.push({
-                ID: key,
+                ID: obj.key,
                 Name: obj.name,
                 Email: obj.email,
                 HP: obj.nohp,
@@ -89,17 +80,16 @@ export default {
                 LastLogin: obj.lastlogin,
                 Price: obj.price,
                 key: key,
-                expired: obj.expired,
                 created_at: obj.created_at,
                 type: obj.level,
-                notification_price_action: obj.notification_price_action,
-                notification_news: obj.notification_news })
+                Subscriber: obj.total_subscriber || 0,
+                Rating: obj.rating || 0 })
             }
           } else {
             if (typeof (obj.status) !== 'undefined') {
-              _this.tableData.push({ ID: key, Name: obj.name, Email: obj.email, HP: obj.nohp, Status: obj.status, LastLogin: obj.lastlogin, Price: 'inactive', key: key, expired: obj.expired, created_at: obj.created_at, type: obj.level, notification_price_action: obj.notification_price_action, notification_news: obj.notification_news })
+              _this.tableData.push({ ID: key, Name: obj.name, Email: obj.email, HP: obj.nohp, Status: obj.status, LastLogin: obj.lastlogin, Price: 'inactive', key: key, created_at: obj.created_at, type: obj.level, Subscriber: obj.total_subscriber || 0, Rating: obj.rating || 0 + ' of 5' })
             } else {
-              _this.tableData.push({ ID: key, Name: obj.name, Email: obj.email, HP: obj.nohp, Status: 'inactive', LastLogin: obj.lastlogin, Price: 'inactive', key: key, expired: obj.expired, created_at: obj.created_at, type: obj.level, notification_price_action: obj.notification_price_action, notification_news: obj.notification_news })
+              _this.tableData.push({ ID: key, Name: obj.name, Email: obj.email, HP: obj.nohp, Status: 'inactive', LastLogin: obj.lastlogin, Price: 'inactive', key: key, created_at: obj.created_at, type: obj.level, Subscriber: obj.total_subscriber || 0, Rating: obj.rating || 0 + ' of 5' })
             }
           }
         }

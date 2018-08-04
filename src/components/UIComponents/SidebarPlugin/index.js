@@ -14,6 +14,11 @@ const SidebarStore = {
       path: '/users'
     },
     {
+      name: 'Partner',
+      icon: 'ti-github',
+      path: '/partner'
+    },
+    {
       name: 'Orders',
       icon: 'ti-view-list-alt',
       path: '/order'
