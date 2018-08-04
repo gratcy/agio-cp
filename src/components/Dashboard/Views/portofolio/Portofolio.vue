@@ -16,6 +16,7 @@
 import Firebase from 'firebase'
 import Upload from './upload.vue'
 import Select from './Select.vue'
+import { size, result } from 'lodash'
 export default {
   data () {
     return {
@@ -48,32 +49,35 @@ export default {
         snap = snap.val()
         for (let key in snap) {
           let dt = snap[key]
-          let createdat = _this.$moment(dt.created_at).format('Y-M-D')
+          let createdat = _this.$moment(dt.created_at).format('YYYY-MM-DD')
           users.child(dt.uid).once('value', function (usrs) {
             let usr = usrs.val()
-            let ticker = []
-            if (dt.tickers.length > 0) {
-              for (let i = 0; i < dt.tickers.length; i++) {
-                tickerstock.child(dt.tickers[i]).once('value', function (stock) {
-                  ticker.push(stock.val().name)
-                  if (i === dt.tickers.length - 1) {
-                    if (typeof dt.analis !== 'undefined') {
-                      users.child(dt.analis).once('value', function (analis) {
-                        _this.tableData.push({name: usr.name, email: usr.email, ticker: ticker.join(', '), status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, analis: dt.analis, analisname: analis.val().name, created_at: createdat})
-                      })
+            if (result(usr, 'name')) {
+              let ticker = []
+
+              if (size(dt.tickers) > 0) {
+                for (let i = 0; i < dt.tickers.length; i++) {
+                  tickerstock.child(dt.tickers[i]).once('value', function (stock) {
+                    ticker.push(stock.val().name)
+                    if (i === dt.tickers.length - 1) {
+                      if (typeof dt.analis !== 'undefined') {
+                        users.child(dt.analis).once('value', function (analis) {
+                         _this.tableData.push({name: usr.name, email: usr.email, ticker: ticker.join(', '), status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, analis: dt.analis, analisname: analis.val().name, created_at: createdat})
+                        })
+                      } else {
+                        _this.tableData.push({name: usr.name, email: usr.email, ticker: ticker.join(', '), status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, created_at: createdat})
+                      }
                     } else {
-                      _this.tableData.push({name: usr.name, email: usr.email, ticker: ticker.join(', '), status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, created_at: createdat})
+                      if (typeof dt.analis !== 'undefined' && usr.name) {
+                        users.child(dt.analis).once('value', function (analis) {
+                          _this.tableData.push({name: usr.name, email: usr.email, status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, analis: dt.analis, analisname: analis.val().name, created_at: createdat})
+                        })
+                      } else {
+                        _this.tableData.push({name: usr.name, email: usr.email, status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, created_at: createdat})
+                      }
                     }
-                  } else {
-                    if (typeof dt.analis !== 'undefined') {
-                      users.child(dt.analis).once('value', function (analis) {
-                        _this.tableData.push({name: usr.name, email: usr.email, status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, analis: dt.analis, analisname: analis.val().name, created_at: createdat})
-                      })
-                    } else {
-                      _this.tableData.push({name: usr.name, email: usr.email, status: dt.status, key: key, result: dt.result, price: dt.price, uid: dt.uid, created_at: createdat})
-                    }
-                  }
-                })
+                  })
+                }
               }
             }
           })

@@ -16,6 +16,7 @@ import Price from './Price.vue'
 import NPrice from './nprice.vue'
 import NNews from './nnews.vue'
 import Type from './Type.vue'
+import { orderBy } from 'lodash'
 export default {
   data () {
     return {
@@ -48,6 +49,7 @@ export default {
       let _this = this
       Firebase.database().ref('users').orderByChild('level').equalTo('member').on('value', function (snapshot) {
         let dt = snapshot.val()
+        dt = orderBy(dt, ['created_at'], ['desc'])
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]

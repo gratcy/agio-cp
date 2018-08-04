@@ -17,7 +17,7 @@
       <div class="row form-group" v-show="video">
         <div class="col-lg-12">
         <label>Youtube URL</label>
-        <textarea id="YoutubeEmbed" v-model="data.data" placeholder="Youtube URL" class="form-control" :rows="3" :max-rows="6">
+        <textarea id="YoutubeEmbed" v-model="data.data" @change="youtubeChage()" placeholder="Youtube URL" class="form-control" :rows="3" :max-rows="6">
         </textarea>
         </div>
         <div class="col-lg-12">
@@ -138,6 +138,12 @@ export default{
         this.image = false
         this.video = false
       }
+    },
+    youtubeChage () {
+        let yt = this.data.data
+        yt = yt.split('=')
+
+        this.data.ytEmbed = 'https://www.youtube.com/embed/' + yt[1]
     }
   }
 }

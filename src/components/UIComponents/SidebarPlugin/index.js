@@ -49,6 +49,11 @@ const SidebarStore = {
       path: '/news'
     },
     {
+      name: 'Event',
+      icon: 'ti-ruler-pencil',
+      path: '/event'
+    },
+    {
       name: 'Slideshow',
       icon: 'ti-image',
       path: '/slideshow'

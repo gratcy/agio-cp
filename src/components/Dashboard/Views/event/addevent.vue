@@ -4,8 +4,8 @@
       <div class="form-group" style="display: none;">
         <label>Choose Type</label>
         <select class="form-control" v-model="data.type" @change="validate">
-          <option value="news" selected>news</option>
-          <option value="event">event</option>
+          <option value="news">news</option>
+          <option value="event" selected>event</option>
         </select>  
       </div>
       <div class="form-group">
@@ -198,7 +198,6 @@ export default{
 
       this.data.type = _.toLower(_.result(this.data, 'type', 'news'))
       this.type = 'edit'
-      
       if (this.data.slides[0].type === 'image') {
         this.slideImg = true
         this.slideYt = false
@@ -280,7 +279,7 @@ export default{
         let newPostKey = Firebase.database().ref('news').push().key
         Firebase.database().ref('news/' + newPostKey).set(this.data)
         this.data = {}
-        this.$router.push('/news')
+        this.$router.push('/event')
       } else if (this.type === 'edit') {
         let now = Date.now()
         this.data.updated_at = now
@@ -295,7 +294,7 @@ export default{
         Firebase.database().ref('news/' + key).set(this.data)
         this.data = {}
         this.type = 'created'
-        this.$router.push('/news')
+        this.$router.push('/event')
       }
     },
     filesChange (fieldName, fileList) {

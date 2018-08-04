@@ -19,6 +19,9 @@ import Partner from 'src/components/Dashboard/Views/partner/Partner.vue'
 import AddNews from 'src/components/Dashboard/Views/news/addnews.vue'
 import News from 'src/components/Dashboard/Views/news/news.vue'
 import DetailNews from 'src/components/Dashboard/Views/news/detail.vue'
+import AddEvent from 'src/components/Dashboard/Views/event/addevent.vue'
+import Event from 'src/components/Dashboard/Views/event/event.vue'
+import DetailEvent from 'src/components/Dashboard/Views/event/detail.vue'
 import Ticker from 'src/components/Dashboard/Views/ticker/Ticker.vue'
 import AddTicker from 'src/components/Dashboard/Views/ticker/addTicker.vue'
 import Portofolio from 'src/components/Dashboard/Views/portofolio/Portofolio.vue'
@@ -169,6 +172,26 @@ const routes = [
         path: 'news/detail',
         name: 'Detail News',
         component: DetailNews
+      },
+      {
+        path: 'event/add',
+        name: 'Add Event',
+        component: AddEvent
+      },
+      {
+        path: 'event/edit',
+        name: 'Edit Event',
+        component: AddEvent
+      },
+      {
+        path: 'event',
+        name: 'Event',
+        component: Event
+      },
+      {
+        path: 'event/detail',
+        name: 'Detail Event',
+        component: DetailEvent
       },
       {
         path: 'order',

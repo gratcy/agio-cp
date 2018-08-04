@@ -16,6 +16,8 @@
 import Firebase from 'firebase'
 import Button from './Button.vue'
 import Global from '../global'
+import { orderBy } from 'lodash'
+
 export default {
   data () {
     return {
@@ -42,6 +44,7 @@ export default {
       let users = Firebase.database().ref().child('users')
       Firebase.database().ref('priceAction').on('value', function (snapshot) {
         let dt = snapshot.val()
+        dt = orderBy(dt, ['created_at'], ['desc'])
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]

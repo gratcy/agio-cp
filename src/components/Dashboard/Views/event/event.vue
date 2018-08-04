@@ -3,7 +3,7 @@
       <div class='col-md-12'>
         <div class='card'>
           <router-link to="/news/add">
-            <v-btn class="pull-right"><i class="ti-plus"></i> Add News</v-btn>
+            <v-btn class="pull-right"><i class="ti-plus"></i> Add Event</v-btn>
           </router-link>
           <v-client-table :data="tableData" :columns="columns" name="dt" :options="options">
           </v-client-table>
@@ -16,7 +16,7 @@
 import Firebase from 'firebase'
 import Content from './content.vue'
 import { orderBy } from 'lodash'
-// import Price from './Price.vue'
+
 export default {
   data () {
     return {
@@ -40,10 +40,9 @@ export default {
   methods: {
     definedata () {
       let _this = this
-      Firebase.database().ref('news').orderByChild('type').equalTo('news').on('value', function (snapshot) {
+      Firebase.database().ref('news').orderByChild('type').equalTo('event').on('value', function (snapshot) {
         let dt = snapshot.val()
         dt = orderBy(dt, ['created_at'], ['desc'])
-
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]

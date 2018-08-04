@@ -10,8 +10,7 @@
       </nav>
       <div class="copyright pull-right">
         &copy; Coded with
-        <i class="fa fa-heart heart"></i> at Yogyakarta.
-        Maintainer by <a href="http://javasign.id" target="_blank">Javasign Team</a>.
+        <i class="fa fa-heart heart"></i> on the fly.
       </div>
     </div>
   </footer>

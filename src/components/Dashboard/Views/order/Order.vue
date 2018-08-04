@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import { result } from 'lodash'
+import { result, orderBy } from 'lodash'
 import Firebase from 'firebase'
 import Select from './Status.vue'
 import View from './View.vue'
@@ -56,6 +56,7 @@ export default {
       let account = Firebase.database().ref().child('accounts')
       Firebase.database().ref('payments').on('value', function (snapshot) {
         let dt = snapshot.val()
+        dt = orderBy(dt, ['created_at'], ['desc'])
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]
