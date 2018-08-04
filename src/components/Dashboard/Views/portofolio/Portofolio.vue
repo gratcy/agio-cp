@@ -49,7 +49,6 @@ export default {
         for (let key in snap) {
           let dt = snap[key]
           let createdat = _this.$moment(dt.created_at).format('Y-M-D')
-          console.log(createdat)
           users.child(dt.uid).once('value', function (usrs) {
             let usr = usrs.val()
             let ticker = []

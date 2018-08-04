@@ -1,21 +1,22 @@
 import Firebase from 'firebase'
 export default {
   createOptions (value) {
-    if (value !== '') {
-      value = value.toString().replace(/[A-Za-z]/g, '')
-      if (value.slice(-1) === ',') {
-        return value
-      } else {
-        value = parseFloat(value.replace(',', '.'))
-        let val = (value / 1).toFixed(0).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    if (typeof value !== 'undefined') {
+      if (value !== '') {
+        value = value.toString().replace(/[A-Za-z]/g, '')
+        if (value.slice(-1) === ',') {
+          return value
+        } else {
+          value = parseFloat(value.replace(',', '.'))
+          let val = (value / 1).toFixed(0).replace('.', ',')
+          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+        }
       }
     }
   },
   fcm (message) {
     let FCM = require('fcm-push')
-    // let serverKey = 'AAAAX9D6H30:APA91bG8VmJqM8EOar8WvEIJobJKplRnX8envxXwXSI9_fLqGWiibD7ZafvKhb4l1V_75d90EUgt4Tg3cYHglKPId9XDRSYtsYePXyi5gAc5OkS3iAlgmcSZG_dCwWM8ceMqXkLUnei8'
-    let serverKey = 'AAAALJNN6h4:APA91bEvqG9I0qpOcYVcnIWfa3NfmGXWGYHLhsp5sq0hbi32aSMwndj5rGqG7xWBkwos73uhWqWYJrPveUjMX-qnABGOUExVAR3-WgXehztxdl8G9cPX2-VYcqLiKAOoec5_djgApslmRzHUnaezN5XtYd2TnMlgVg'
+    let serverKey = ''
     let fcm = new FCM(serverKey)
     fcm.send(message)
     .then(function (response) {

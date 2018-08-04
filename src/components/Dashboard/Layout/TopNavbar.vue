@@ -24,12 +24,13 @@
   </nav>
 </template>
 <script>
+  import { upperFirst } from 'lodash'
   import Firebase from 'firebase'
   export default {
     computed: {
       routeName () {
         const {name} = this.$route
-        return this.capitalizeFirstLetter(name)
+        return upperFirst(name)
       }
     },
     data () {
@@ -38,11 +39,6 @@
       }
     },
     methods: {
-      capitalizeFirstLetter (string) {
-        if (string !== '') {
-          return string.charAt(0).toUpperCase() + string.slice(1)
-        }
-      },
       toggleNotificationDropDown () {
         this.activeNotifications = !this.activeNotifications
       },

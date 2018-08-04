@@ -44,13 +44,8 @@ import Firebase from 'firebase'
 import PaperNotification from 'src/components/UIComponents/NotificationPlugin/Notification.vue'
 Vue.use(VueFire)
 let config = {
-  // databaseURL: 'https://agio-72a5e.firebaseio.com/',
-  // apiKey: 'AIzaSyBY4t1yHIaW6MTHFf3-xsc0-c0p-ngvEyg',
-  // 'storageBucket': 'gs://agio-72a5e.appspot.com/'
-  databaseURL: 'https://agio-dev-a2df4.firebaseio.com/',
-  apiKey: 'AIzaSyBL8ALto7xgv9XLMXgNunvo0UK9NEKP5Wo',
-  'storageBucket': 'gs://agio-dev-a2df4.appspot.com'
 }
+
 Firebase.initializeApp(config)
 let db = Firebase.database()
 export default {

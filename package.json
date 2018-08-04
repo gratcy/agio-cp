@@ -14,10 +14,12 @@
   },
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
+    "@voerro/vue-tagsinput": "^1.8.0",
     "babel-eslint": "^8.2.6",
     "babel-preset-env": "^1.7.0",
     "bootstrap": "^4.1.2",
     "chartist": "^0.11.0",
+    "dotenv": "^6.0.0",
     "eslint-plugin-vue": "^4.7.1",
     "extract-text-webpack-plugin": "^3.0.2",
     "fcm-push": "^1.1.3",

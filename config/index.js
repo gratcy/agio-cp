@@ -1,5 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
+require('dotenv').config()
 var path = require('path')
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -23,7 +25,7 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8080,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {},

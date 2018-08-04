@@ -66,6 +66,8 @@
           <label>Youtube URL I</label>
           <textarea placeholder="Youtube URL Script" v-model="data.slides[0].data" class="form-control" :rows="3" :max-rows="6">
           </textarea>
+          <br />
+          <iframe width="560" height="315" v-bind:src="data.slides[0].dataYT" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
       </div>
       <div class="form-group col-lg-12">
@@ -86,6 +88,8 @@
           <label>Youtube URL II</label>
           <textarea placeholder="Youtube URL Script" v-model="data.slides[1].data" class="form-control" :rows="3" :max-rows="6">
           </textarea>
+          <br />
+          <iframe width="560" height="315" v-bind:src="data.slides[1].dataYT" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
       </div>
       <div class="form-group col-lg-12">
@@ -106,6 +110,8 @@
           <label>Youtube URL III</label>
           <textarea placeholder="Youtube URL Script" v-model="data.slides[2].data" class="form-control" :rows="3" :max-rows="6">
           </textarea>
+          <br />
+          <iframe width="560" height="315" v-bind:src="data.slides[2].dataYT" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
       </div>
       <div class="form-group col-lg-4" v-show="button">
@@ -114,7 +120,7 @@
       <br>
       <div class="form-group" v-show="news">
         <label>Tag</label>
-        <input type="text" name="" placeholder="#update #insight" v-model="data.tag" class="form-control">
+        <tags-input element-id="dataTags" id="dataTags" v-model="data.tag" class="form-control"></tags-input>
       </div>
       <div class="text-center">
       <v-btn class="btn btn-info btn-fill btn-wd" @click="submit" :disabled="button">Submit</v-btn>
@@ -123,11 +129,14 @@
 	</div>
 </template>
 <script>
+import Vue from 'vue'
+import VoerroTagsInput from '@voerro/vue-tagsinput';
 import _ from 'lodash'
 import Firebase from 'firebase'
 import { VueEditor } from 'vue2-editor'
 import Datepicker from 'vuejs-datepicker'
 import Timepicker from 'vue-simple-timepicker'
+Vue.component('tags-input', VoerroTagsInput);
 export default{
   data () {
     return {
@@ -169,18 +178,23 @@ export default{
         this.data.slides = [
           {
             type: 'image',
-            data: ''
+            data: '',
+            dataYT: ''
           },
           {
             type: 'image',
-            data: ''
+            data: '',
+            dataYT: ''
           },
           {
             type: 'image',
-            data: ''
+            data: '',
+            dataYT: ''
           }
         ]
       }
+
+      this.data.tag = _.replace(this.data.tag, /\s/g, ',')
 
       this.data.type = _.toLower(_.result(this.data, 'type', 'news'))
       this.type = 'edit'
@@ -189,24 +203,36 @@ export default{
         this.slideImg = true
         this.slideYt = false
       } else {
+        let yt = this.data.slides[0].data
+        yt = yt.split('=')
+
         this.slideImg = false
         this.slideYt = true
+        this.data.slides[0].dataYT = 'https://www.youtube.com/embed/' + yt[1]
       }
 
       if (this.data.slides[1].type === 'image') {
         this.slideImg2 = true
         this.slideYt2 = false
       } else {
+        let yt = this.data.slides[1].data
+        yt = yt.split('=')
+
         this.slideImg2 = false
         this.slideYt2 = true
+        this.data.slides[1].dataYT = 'https://www.youtube.com/embed/' + yt[1]
       }
 
       if (this.data.slides[2].type === 'image') {
         this.slideImg3 = true
         this.slideYt3 = false
       } else {
+        let yt = this.data.slides[2].data
+        yt = yt.split('=')
+
         this.slideImg3 = false
         this.slideYt3 = true
+        this.data.slides[2].dataYT = 'https://www.youtube.com/embed/' + yt[1]
       }
 
       if (this.data.type === 'news') {

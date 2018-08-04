@@ -10,6 +10,7 @@
     </div>
 </template>
 <script>
+import { result } from 'lodash'
 import Firebase from 'firebase'
 import Select from './Status.vue'
 import View from './View.vue'
@@ -17,7 +18,7 @@ import Global from '../global'
 export default {
   data () {
     return {
-      columns: ['order_id', 'created_at', 'type', 'total', 'user', 'status', 'account', 'Confirmation'],
+      columns: ['key', 'order_id', 'created_at', 'ttype', 'type', 'total', 'user', 'status', 'account', 'Confirmation'],
       tableData: [],
       options: {
         templates: {
@@ -25,8 +26,10 @@ export default {
           Confirmation: View
         },
         headings: {
+          key: 'ID',
           order_id: 'Order ID',
           created_at: 'Created At',
+          ttype: 'Order For',
           type: 'Type',
           total: 'Amount',
           account: 'Bank',
@@ -41,6 +44,13 @@ export default {
   },
   methods: {
     definedata () {
+      const orderType = {
+        PortofolioCheckup: 'Portofolio Checkup',
+        PremiumMembership: 'Premium Membership',
+        Event: 'Event',
+        ProTrade: 'Pro Trade'
+      }
+
       let _this = this
       let users = Firebase.database().ref().child('users')
       let account = Firebase.database().ref().child('accounts')
@@ -52,9 +62,11 @@ export default {
           obj.key = key
           obj.created_at = _this.$moment(obj.created_at).format('DD MMM YYYY HH:mm')
           obj.total = Global.createOptions(obj.total)
+          obj.ttype = result(obj, 'ttype','Agio')
           users.child(obj.uid).once('value', function (usrs) {
             let usr = usrs.val()
-            obj.user = usr.name
+            obj.user = result(usr, 'name', '')
+            obj.type = orderType[obj.type]
             if (typeof obj.transfer_to_account !== 'undefined') {
               account.child(obj.transfer_to_account).once('value', function (acct) {
                 let accts = acct.val()

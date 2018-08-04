@@ -20,6 +20,10 @@
         <textarea id="YoutubeEmbed" v-model="data.data" placeholder="Youtube URL" class="form-control" :rows="3" :max-rows="6">
         </textarea>
         </div>
+        <div class="col-lg-12">
+        <label>View</label>
+        <iframe width="560" height="315" v-bind:src="data.ytEmbed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
       </div>
       <div class="form-group" v-show="image">
         <label>Link</label>
@@ -67,6 +71,9 @@ export default{
     let data = this.$session.has('edit')
     if (data !== false) {
       this.data = this.$session.get('edit')
+      let yt = this.data.data
+      yt = yt.split('=') 
+      this.data.ytEmbed = 'https://www.youtube.com/embed/' + yt[1]
       this.type = 'edit'
       if (this.data.type === 'image') {
         this.image = true
