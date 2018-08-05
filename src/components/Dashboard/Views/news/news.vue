@@ -15,8 +15,7 @@
 <script>
 import Firebase from 'firebase'
 import Content from './content.vue'
-import { orderBy } from 'lodash'
-// import Price from './Price.vue'
+import Global from '../global'
 export default {
   data () {
     return {
@@ -42,7 +41,7 @@ export default {
       let _this = this
       Firebase.database().ref('news').orderByChild('type').equalTo('news').on('value', function (snapshot) {
         let dt = snapshot.val()
-        dt = orderBy(dt, ['created_at'], ['desc'])
+        dt = Global.__sort_object(dt)
 
         _this.tableData = []
         for (let key in dt) {

@@ -273,7 +273,7 @@ export default{
         }
         this.data.ttype = 'Agio'
         this.data.updated_at = now
-        this.data.event_date = this.$moment(this.data.event_date).unix()
+        this.data.event_date = this.$moment(new Date(this.data.event_date)).unix()
         this.data.htm = parseFloat(_.result(this.data, 'htm', 0))
         this.data.seat = parseFloat(_.result(this.data, 'seat', 0))
         let newPostKey = Firebase.database().ref('news').push().key
@@ -286,15 +286,16 @@ export default{
         if (this.timepicker.hours !== '' && this.timepicker.minutes !== '' && this.timepicker2.hours !== '' && this.timepicker2.minutes !== '') {
           this.data.jam = this.timepicker.hours + ':' + this.timepicker.minutes + ' - ' + this.timepicker2.hours + ':' + this.timepicker2.minutes
         }
-        this.data.event_date = this.$moment(this.data.event_date).unix()
+        this.data.event_date = this.$moment(new Date(this.data.event_date)).unix()
         this.data.htm = parseFloat(_.result(this.data, 'htm', 0))
         this.data.seat = parseFloat(_.result(this.data, 'seat',0))
         let key = this.data.key
+        console.log('after: ',this.data)
         delete this.submit.key
         Firebase.database().ref('news/' + key).set(this.data)
         this.data = {}
         this.type = 'created'
-        this.$router.push('/event')
+        // this.$router.push('/event')
       }
     },
     filesChange (fieldName, fileList) {
@@ -386,6 +387,7 @@ export default{
       }
     },
     customFormatter (date) {
+      console.log(date)
       return this.$moment(date).format('YYYY-MM-DD')
     },
     youtubeChage () {

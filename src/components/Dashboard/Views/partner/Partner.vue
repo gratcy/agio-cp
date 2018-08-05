@@ -14,6 +14,7 @@ import Firebase from 'firebase'
 import Select from './Select.vue'
 import Price from './Price.vue'
 import Type from './Type.vue'
+import Global from '../global'
 export default {
   data () {
     return {
@@ -44,6 +45,7 @@ export default {
       let _this = this
       Firebase.database().ref('users').orderByChild('level').equalTo('partner').on('value', function (snapshot) {
         let dt = snapshot.val()
+        dt = Global.__sort_object(dt)
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]
@@ -72,7 +74,7 @@ export default {
                 Rating: obj.rating || 0 })
             } else {
               _this.tableData.push({
-                ID: obj.key,
+                ID: key,
                 Name: obj.name,
                 Email: obj.email,
                 HP: obj.nohp,

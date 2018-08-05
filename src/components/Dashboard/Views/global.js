@@ -14,10 +14,27 @@ export default {
       }
     }
   },
+  __sort_object(obj) {
+    let data = []
+    Object.keys(obj).map(function(objectKey, index) {
+      obj[objectKey].key = objectKey
+      data.push(obj[objectKey])
+    })
+
+    data.sort(function(a, b) {
+      return b.created_at - a.created_at
+    })
+
+    let dataFinal = {}
+    for (let i = 0; i < data.length; ++i) {
+      let key = data[i].key
+      dataFinal[key] = data[i]
+    }
+    return dataFinal
+  },
   fcm (message) {
     let FCM = require('fcm-push')
-    // let serverKey = 'AAAAX9D6H30:APA91bG8VmJqM8EOar8WvEIJobJKplRnX8envxXwXSI9_fLqGWiibD7ZafvKhb4l1V_75d90EUgt4Tg3cYHglKPId9XDRSYtsYePXyi5gAc5OkS3iAlgmcSZG_dCwWM8ceMqXkLUnei8'
-    let serverKey = 'AAAALJNN6h4:APA91bEvqG9I0qpOcYVcnIWfa3NfmGXWGYHLhsp5sq0hbi32aSMwndj5rGqG7xWBkwos73uhWqWYJrPveUjMX-qnABGOUExVAR3-WgXehztxdl8G9cPX2-VYcqLiKAOoec5_djgApslmRzHUnaezN5XtYd2TnMlgVg'
+    let serverKey = ''
     let fcm = new FCM(serverKey)
     fcm.send(message)
     .then(function (response) {
