@@ -56,7 +56,7 @@ export default {
       let account = Firebase.database().ref().child('accounts')
       Firebase.database().ref('payments').on('value', function (snapshot) {
         let dt = snapshot.val()
-        dt = Global.__sort_object(dt)
+        // dt = Global.__sort_object(dt)
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]

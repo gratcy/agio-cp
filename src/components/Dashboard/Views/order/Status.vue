@@ -2,7 +2,7 @@
 	<div>
 		<select class="form-control" v-model="data.status" @change="edit">
     <option value="waitforpayment">waitforpayment</option>
-    <!-- <option value="confirmed">confirmed </option>   -->
+    <option value="confirmed">confirmed </option>  
     <option value="done">done</option>
     <option value="reject">reject</option>
     </select>
@@ -20,17 +20,18 @@ export default{
   props: ['data'],
   methods: {
     edit () {
-      if (this.data.status === 'done' && this.data.type === 'PremiumMembership') {
+      if (this.data.status === 'done' && this.data.type === 'PremiumMembership' || this.data.status === 'done' && this.data.type.toLowerCase() === 'premium membership') {
         let _this = this
+        console.log(this.data)
         Firebase.database().ref('subscription_history').orderByChild('payment_key').equalTo(this.data.key).on('child_added', function (snap) {
           let ayearlater = ''
-          let now = this.$moment().format('YYYY-MM-DD')
+          let now = _this.$moment().format('YYYY-MM-DD')
           if (snap.val().type === 'quarterly') {
-            ayearlater = this.$moment().add(3, 'months').format('YYYY-MM-DD')
+            ayearlater = _this.$moment().add(3, 'months').format('YYYY-MM-DD')
           } else if (snap.val().type === 'monthly') {
-            ayearlater = this.$moment().add(1, 'months').format('YYYY-MM-DD')
+            ayearlater = _this.$moment().add(1, 'months').format('YYYY-MM-DD')
           } else if (snap.val().type === 'yearly') {
-            ayearlater = this.$moment().add(1, 'years').format('YYYY-MM-DD')
+            ayearlater = _this.$moment().add(1, 'years').format('YYYY-MM-DD')
           }
           Firebase.database().ref('users/' + _this.data.uid).update({expired: ayearlater, notification_price_action: 'active'})
           Firebase.database().ref('payments/' + _this.data.key).update({status: _this.data.status})
@@ -51,7 +52,7 @@ export default{
             Global.saveNotif(_this.data.uid, notif)
           })
         })
-      } else if (this.data.status === 'done' && this.data.type.toLowerCase() === 'portofoliocheckup') {
+      } else if (this.data.status === 'done' && this.data.type.toLowerCase() === 'portofoliocheckup' || this.data.status === 'done' && this.data.type.toLowerCase() === 'portofolio checkup') {
         Firebase.database().ref('payments/' + this.data.key).update({status: this.data.status})
         Global.updatePortofolioPaidByPayment(this.data.key, this.data.uid)
       } else if (this.data.status === 'done' && this.data.type.toLowerCase() === 'event') {
