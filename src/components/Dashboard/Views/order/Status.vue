@@ -22,7 +22,6 @@ export default{
     edit () {
       if (this.data.status === 'done' && this.data.type === 'PremiumMembership' || this.data.status === 'done' && this.data.type.toLowerCase() === 'premium membership') {
         let _this = this
-        console.log(this.data)
         Firebase.database().ref('subscription_history').orderByChild('payment_key').equalTo(this.data.key).on('child_added', function (snap) {
           let ayearlater = ''
           let now = _this.$moment().format('YYYY-MM-DD')
