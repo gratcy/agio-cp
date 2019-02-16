@@ -18,7 +18,7 @@ import Global from '../global'
 export default {
   data () {
     return {
-      columns: ['key', 'order_id', 'created_at', 'ttype', 'type', 'total', 'user', 'status', 'account', 'Confirmation'],
+      columns: ['key', 'order_id', 'created_at', 'ttype', 'type', 'analisname', 'total', 'user', 'status', 'account', 'Confirmation'],
       tableData: [],
       options: {
         templates: {
@@ -31,6 +31,7 @@ export default {
           created_at: 'Created At',
           ttype: 'Order For',
           type: 'Type',
+          analisname: 'Analyst Name',
           total: 'Amount',
           account: 'Bank',
           status: 'Status',
@@ -56,11 +57,13 @@ export default {
       let account = Firebase.database().ref().child('accounts')
       Firebase.database().ref('payments').on('value', function (snapshot) {
         let dt = snapshot.val()
-        // dt = Global.__sort_object(dt)
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]
           obj.key = key
+          if (obj.type !== 'ProTrade') {
+            obj.analisname = '-'
+          }
           obj.created_at = _this.$moment(obj.created_at).format('DD MMM YYYY HH:mm')
           obj.total = Global.createOptions(obj.total)
           obj.ttype = result(obj, 'ttype','Agio')
@@ -79,6 +82,7 @@ export default {
             }
           })
         }
+        _this.tableData = _this.tableData.reverse()
       })
     }
   }

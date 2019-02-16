@@ -21,7 +21,7 @@ import { orderBy } from 'lodash'
 export default {
   data () {
     return {
-      columns: ['type', 'order', 'ticker', 'price', 'last', 'target', 'stop', 'potential', 'call', 'analisname', 'action'],
+      columns: ['type', 'created_at', 'order', 'ticker', 'price', 'last', 'target', 'stop', 'potential', 'call', 'analisname', 'action'],
       tableData: [],
       options: {
         templates: {
@@ -29,6 +29,7 @@ export default {
         },
         headings: {
           analisname: 'Analyst',
+          created_at: 'Created at',
           order: 'Ranking'
         }
       }
@@ -44,14 +45,15 @@ export default {
       let users = Firebase.database().ref().child('users')
       Firebase.database().ref('priceAction').on('value', function (snapshot) {
         let dt = snapshot.val()
-        dt = orderBy(dt, ['created_at'], ['desc'])
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]
+          let createdAt = obj.created_at ? _this.$moment(obj.created_at).format('DD MMM YYYY HH:mm') : '-'
           users.child(obj.analis).once('value', function (usrs) {
-            _this.tableData.push({ order: obj.order, type: obj.type || 'Agio', ticker: obj.ticker, price: Global.createOptions(obj.price), last: Global.createOptions(obj.lastPrice), target: Global.createOptions(obj.target), stop: Global.createOptions(obj.stopLoss), potential: Global.createOptions(obj.potentialUpside), call: obj.call, key: key, stopLoss: obj.stopLoss, potentialUpside: obj.potentialUpside, start_date: obj.start_date, end_date: obj.end_date, lastPrice: obj.lastPrice, tickerKey: obj.tickerKey, status: obj.status, analis: obj.analis, analisname: usrs.val().name })
+            _this.tableData.push({ order: obj.order, type: obj.type || 'Agio', created_at: createdAt, ticker: obj.ticker, price: Global.createOptions(obj.price), last: Global.createOptions(obj.lastPrice), target: Global.createOptions(obj.target), stop: Global.createOptions(obj.stopLoss), potential: Global.createOptions(obj.potentialUpside), call: obj.call, key: key, stopLoss: obj.stopLoss, potentialUpside: obj.potentialUpside, start_date: obj.start_date, end_date: obj.end_date, lastPrice: obj.lastPrice, tickerKey: obj.tickerKey, status: obj.status, analis: obj.analis, analisname: usrs.val().name })
           })
         }
+        _this.tableData = _this.tableData.reverse()
       })
     }
   }

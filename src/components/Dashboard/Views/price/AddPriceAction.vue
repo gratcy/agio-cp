@@ -223,6 +223,7 @@ export default {
 
         this.submit.start_date = new Date(this.submit.start_date).getTime()
         this.submit.end_date = new Date(this.date).getTime()
+        this.submit.updated_at = Date.now()
         this.submit.price = parseFloat(this.submit.price)
         this.submit.lastPrice = parseFloat(this.submit.lastPrice)
         this.submit.stopLoss = parseFloat(this.submit.stopLoss)
@@ -265,6 +266,8 @@ export default {
 
         this.submit.start_date = new Date(this.submit.start_date).getTime()
         this.submit.end_date = new Date(this.date).getTime()
+        this.submit.created_at = Date.now()
+        this.submit.updated_at = Date.now()
         this.submit.ticker = ticker
         this.submit.tickerKey = key
         this.submit.type = 'Agio'

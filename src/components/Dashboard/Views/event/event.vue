@@ -43,7 +43,6 @@ export default {
       let _this = this
       Firebase.database().ref('news').orderByChild('type').equalTo('event').on('value', function (snapshot) {
         let dt = snapshot.val()
-        dt = Global.__sort_object(dt)
         _this.tableData = []
         for (let key in dt) {
           let obj = dt[key]
@@ -56,6 +55,7 @@ export default {
           obj['Event Date'] = _this.$moment(obj.event_date).format('DD/MM/YY')
           _this.tableData.push(obj)
         }
+        _this.tableData = _this.tableData.reverse()
       })
     }
   }
