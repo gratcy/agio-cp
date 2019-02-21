@@ -14,15 +14,17 @@ import { result } from 'lodash'
 import Firebase from 'firebase'
 import Select from './Status.vue'
 import View from './View.vue'
+import Href from '../Href.vue'
 import Global from '../global'
 export default {
   data () {
     return {
-      columns: ['key', 'order_id', 'created_at', 'ttype', 'type', 'analisname', 'total', 'user', 'status', 'account', 'Confirmation'],
+      columns: ['key', 'order_id', 'created_at', 'ttype', 'type', 'analisname', 'total', 'user', 'status', 'payment_proof', 'account', 'Confirmation'],
       tableData: [],
       options: {
         templates: {
           status: Select,
+          payment_proof: Href,
           Confirmation: View
         },
         headings: {
@@ -35,6 +37,7 @@ export default {
           total: 'Amount',
           account: 'Bank',
           status: 'Status',
+          payment_proof: 'Payment Proof',
           user: 'User'
         }
       }
@@ -64,6 +67,7 @@ export default {
           if (obj.type !== 'ProTrade') {
             obj.analisname = '-'
           }
+          // obj.payment_proof = '<a v-bind:href="'+obj.payment_proof+'">View</a>'
           obj.created_at = _this.$moment(obj.created_at).format('DD MMM YYYY HH:mm')
           obj.total = Global.createOptions(obj.total)
           obj.ttype = result(obj, 'ttype','Agio')
