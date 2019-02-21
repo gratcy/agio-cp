@@ -12,7 +12,6 @@
         <label>Title</label>
         <input type="text" name="" placeholder="Image Title" v-model="data.title" class="form-control" v-show="image">
         <input type="text" name="" placeholder="Video Title" v-model="data.title" class="form-control" v-show="video">
-
       </div>
       <div class="row form-group" v-show="video">
         <div class="col-lg-12">

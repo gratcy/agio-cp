@@ -41,3 +41,4 @@ shared
 *_REMOTE_*
 *-lock.json
 *.lock
+dist/*

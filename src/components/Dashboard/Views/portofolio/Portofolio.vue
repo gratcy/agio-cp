@@ -82,6 +82,7 @@ export default {
             }
           })
         }
+        _this.tableData = _this.tableData.reverse()
       })
     }
   }

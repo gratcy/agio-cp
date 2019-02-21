@@ -258,6 +258,23 @@ export default{
       }
     } else {
       this.data = {}
+      this.data.slides = [
+        {
+          type: 'image',
+          data: '',
+          dataYT: ''
+        },
+        {
+          type: 'image',
+          data: '',
+          dataYT: ''
+        },
+        {
+          type: 'image',
+          data: '',
+          dataYT: ''
+        }
+      ]
       this.jam1 = ''
       this.jam2 = ''
       this.type = 'create'

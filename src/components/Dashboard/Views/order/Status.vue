@@ -22,7 +22,6 @@ export default{
     edit () {
       if (this.data.status === 'done' && this.data.type === 'PremiumMembership' || this.data.status === 'done' && this.data.type.toLowerCase() === 'premium membership') {
         let _this = this
-        console.log(this.data)
         Firebase.database().ref('subscription_history').orderByChild('payment_key').equalTo(this.data.key).on('child_added', function (snap) {
           let ayearlater = ''
           let now = _this.$moment().format('YYYY-MM-DD')
@@ -49,6 +48,37 @@ export default{
               Global.fcm(message)
             }
             let notif = {code: 'NA002', created_at: new Date().getTime(), message: body, status: 'unread', title: 'Langganan berhasil', type: 'PremiumMembership', updated_at: new Date().getTime(), order: new Date().getTime() * -1}
+            Global.saveNotif(_this.data.uid, notif)
+          })
+        })
+      } else if (this.data.status === 'done' && this.data.type.toLowerCase() === 'pro trade' || this.data.status === 'done' && this.data.type === 'ProTrade') {
+        let _this = this
+        Firebase.database().ref('subscription_history').orderByChild('payment_key').equalTo(this.data.key).on('child_added', function (snap) {
+          let ayearlater = ''
+          let now = _this.$moment().format('YYYY-MM-DD')
+          if (snap.val().type === 'quarterly') {
+            ayearlater = _this.$moment().add(3, 'months').format('YYYY-MM-DD')
+          } else if (snap.val().type === 'monthly') {
+            ayearlater = _this.$moment().add(1, 'months').format('YYYY-MM-DD')
+          } else if (snap.val().type === 'yearly') {
+            ayearlater = _this.$moment().add(1, 'years').format('YYYY-MM-DD')
+          }
+          Firebase.database().ref('users/' + _this.data.uid).update({expired: ayearlater, notification_price_action: 'active'})
+          Firebase.database().ref('payments/' + _this.data.key).update({status: _this.data.status})
+          Firebase.database().ref('users/' + _this.data.uid).once('value', function (val) {
+            let body = 'Selamat ' + val.val().name + ' Anda telah berhasil berlangganan fitur Agio - Pro Trade dengan analist '+_this.data.analisname+' selama periode '+_this.$moment().format('DD MMM YYYY')+' sampai dengan '+_this.$moment().add(_this.data.durasi, 'months').format('DD MMM YYYY')+'.'
+            if (typeof val.val().fcm !== 'undefined' && val.val().fcm !== '') {
+              let message = {
+                to: val.val().fcm,
+                notification: {
+                  code: 'PT002',
+                  title: 'Langganan berhasil',
+                  body: body
+                }
+              }
+              Global.fcm(message)
+            }
+            let notif = {code: 'PT002', created_at: new Date().getTime(), message: body, status: 'unread', title: 'Langganan berhasil', type: 'ProTrade', updated_at: new Date().getTime(), order: new Date().getTime() * -1}
             Global.saveNotif(_this.data.uid, notif)
           })
         })
